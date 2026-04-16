@@ -13,9 +13,11 @@
 </head>
 <body class="theme-abyss" data-system-state="booting">
 
+    <div class="bg-grid"></div>
     <div class="crt-scanline"></div>
     <div class="vignette-overlay"></div>
-    <div id="dynamic-cursor">
+    
+    <div id="dynamic-cursor" class="desktop-only">
         <div class="cursor-core"></div>
         <div class="cursor-ring"></div>
     </div>
@@ -60,8 +62,10 @@
                 <div class="hero-grid">
                     <div class="hero-typography">
                         <div class="title-layer" data-layer="front">
-                            <h1 class="monumental-text">SPENCER</h1>
-                            <h1 class="monumental-text serif-variant">VILLENA.</h1>
+                            <div class="name-cluster">
+                                <h1 class="monumental-text">SPENCER</h1>
+                                <h1 class="monumental-text serif-variant">VILLENA.</h1>
+                            </div>
                             <p class="hero-quote">above the reach of hope.</p>
                         </div>
                     </div>
@@ -83,7 +87,7 @@
                             <span class="t-label">PRIMARY DIRECTIVE</span>
                             <span class="t-value">FULL-STACK DEVELOPER</span>
                         </div>
-                        <div class="scroll-directive">
+                        <div class="scroll-directive desktop-only">
                             <span class="arrow-down">↓</span>
                             <span>ENGAGE SCROLL</span>
                         </div>
@@ -160,47 +164,9 @@
                 </div>
 
                 <div class="archive-registry" id="project-registry">
-                    <a href="#" class="registry-row" data-preview="preview-1.jpg">
-                        <div class="reg-year">2026</div>
-                        <div class="reg-title">QUEUECARE</div>
-                        <div class="reg-type">DIGITAL QUEUE SYSTEM</div>
-                        <div class="reg-tech">
-                            <span class="tech-badge">JAVA</span>
-                            <span class="tech-badge">HTML</span>
-                            <span class="tech-badge">JS</span>
-                        </div>
-                        <div class="reg-action">
-                            <div class="action-icon">↗</div>
-                        </div>
-                    </a>
-                    <a href="#" class="registry-row" data-preview="preview-2.jpg">
-                        <div class="reg-year">2025</div>
-                        <div class="reg-title">REVOCAB</div>
-                        <div class="reg-type">SPACED-REPETITION TRAINER</div>
-                        <div class="reg-tech">
-                            <span class="tech-badge">PYTHON</span>
-                            <span class="tech-badge">ML LOGIC</span>
-                        </div>
-                        <div class="reg-action">
-                            <div class="action-icon">↗</div>
-                        </div>
-                    </a>
-                    <a href="#" class="registry-row" data-preview="preview-3.jpg">
-                        <div class="reg-year">2024</div>
-                        <div class="reg-title">CHOC_PORTFOLIO</div>
-                        <div class="reg-type">FRONTEND INTERFACE</div>
-                        <div class="reg-tech">
-                            <span class="tech-badge">HTML</span>
-                            <span class="tech-badge">CSS</span>
-                            <span class="tech-badge">JS</span>
-                        </div>
-                        <div class="reg-action">
-                            <div class="action-icon">↗</div>
-                        </div>
-                    </a>
-                </div>
+                    </div>
                 
-                <div id="registry-preview-cursor">
+                <div id="registry-preview-cursor" class="desktop-only">
                     <img src="" alt="Project Preview" id="preview-image">
                 </div>
             </section>
@@ -295,7 +261,7 @@
                 </div>
                 <div class="ft-block">
                     <div class="ft-label">SYSTEM_ID</div>
-                    <div class="ft-data">CHOC_CORE v1.0.0</div>
+                    <div class="ft-data">CHOC_CORE v1.1.0</div>
                     <div class="ft-data">ALL SYSTEMS NOMINAL</div>
                 </div>
             </div>
@@ -303,7 +269,7 @@
         </div>
     </footer>
 
-    <div id="ai-chat-window" class="chat-terminal-hidden">
+    <div id="ai-chat-window" class="chat-terminal-hidden desktop-only">
         <div class="chat-header">
             <span class="chat-title">CHOC_AI // TERMINAL</span>
             <button id="close-chat" aria-label="Close Terminal">[X]</button>
@@ -318,7 +284,7 @@
         </div>
     </div>
 
-    <button id="open-chat" class="terminal-trigger" aria-label="Open AI Terminal">
+    <button id="open-chat" class="terminal-trigger desktop-only" aria-label="Open AI Terminal">
         <span class="trigger-icon">_></span>
         <span class="trigger-text">INITIATE AI</span>
     </button>

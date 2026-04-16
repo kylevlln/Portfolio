@@ -7,12 +7,10 @@ function initBootSequence() {
     const bootScreen = document.getElementById('system-boot');
     const progressBar = document.getElementById('load-progress');
     
-    // Simulate loading
     setTimeout(() => { progressBar.style.width = '30%'; }, 500);
     setTimeout(() => { progressBar.style.width = '70%'; }, 1200);
     setTimeout(() => { progressBar.style.width = '100%'; }, 1800);
     
-    // Remove boot screen
     setTimeout(() => {
         bootScreen.style.transition = 'opacity 0.8s ease, filter 0.8s ease';
         bootScreen.style.opacity = '0';
@@ -22,7 +20,6 @@ function initBootSequence() {
             bootScreen.remove();
             document.body.setAttribute('data-system-state', 'online');
             
-            // Trigger entrance animations immediately for the hero section
             const heroSection = document.getElementById('initiator');
             if(heroSection) heroSection.classList.add('is-visible');
             
@@ -78,8 +75,13 @@ function populateRegistry() {
     `).join('');
 }
 
-// --- 3. DYNAMIC CURSOR & IMAGE REVEAL ---
+// --- 3. DYNAMIC CURSOR & IMAGE REVEAL (WITH MOBILE FIX) ---
 function initCursorAndHover() {
+    // HARDWARE CHECK: If device has a touchscreen, bypass all JS cursor logic to save performance
+    if (window.matchMedia("(pointer: coarse)").matches) {
+        return; 
+    }
+
     const cursor = document.getElementById('dynamic-cursor');
     const cursorCore = cursor.querySelector('.cursor-core');
     const cursorRing = cursor.querySelector('.cursor-ring');
@@ -87,23 +89,22 @@ function initCursorAndHover() {
     const previewContainer = document.getElementById('registry-preview-cursor');
     const previewImage = document.getElementById('preview-image');
 
+    if (!cursor || !cursorCore || !cursorRing) return;
+
     // Track mouse movement
     window.addEventListener('mousemove', (e) => {
         const x = e.clientX;
         const y = e.clientY;
         
-        // Update main cursor elements (using double transform to keep it centered)
         cursorCore.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
         cursorRing.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
         
-        // Update image preview container position if active
-        if (previewContainer.style.opacity === '1') {
+        if (previewContainer && previewContainer.style.opacity === '1') {
             previewContainer.style.left = `${x}px`;
             previewContainer.style.top = `${y}px`;
         }
     });
 
-    // Handle interactive elements (Links, Buttons, Tech Stack)
     const interactives = document.querySelectorAll('a, button, .tech-entity');
     interactives.forEach(el => {
         el.addEventListener('mouseenter', () => {
@@ -119,20 +120,26 @@ function initCursorAndHover() {
     });
 
     // Handle Image Previews on Project Hover
-    const projectRows = document.querySelectorAll('.registry-row');
-    projectRows.forEach(row => {
-        row.addEventListener('mouseenter', (e) => {
-            const imgSrc = row.getAttribute('data-preview');
-            previewImage.src = imgSrc;
-            previewContainer.style.opacity = '1';
-            previewContainer.style.transform = 'translate(-50%, -50%) scale(1)';
+    setTimeout(() => { // Small timeout to ensure DOM is populated
+        const projectRows = document.querySelectorAll('.registry-row');
+        projectRows.forEach(row => {
+            row.addEventListener('mouseenter', (e) => {
+                if(previewContainer && previewImage) {
+                    const imgSrc = row.getAttribute('data-preview');
+                    previewImage.src = imgSrc;
+                    previewContainer.style.opacity = '1';
+                    previewContainer.style.transform = 'translate(-50%, -50%) scale(1)';
+                }
+            });
+            
+            row.addEventListener('mouseleave', () => {
+                if(previewContainer) {
+                    previewContainer.style.opacity = '0';
+                    previewContainer.style.transform = 'translate(-50%, -50%) scale(0.8)';
+                }
+            });
         });
-        
-        row.addEventListener('mouseleave', () => {
-            previewContainer.style.opacity = '0';
-            previewContainer.style.transform = 'translate(-50%, -50%) scale(0.8)';
-        });
-    });
+    }, 100);
 }
 
 // --- 4. TEMPORAL CLOCK (PHILIPPINES TIME SYNC) ---
@@ -207,13 +214,17 @@ function initScrollAnimations() {
 
 // --- 7. AI TERMINAL LOGIC ---
 function initAiTerminal() {
+    // Hardware check: Bypassed on mobile since we hide the terminal there
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
     const chatWindow = document.getElementById('ai-chat-window');
     const openBtn = document.getElementById('open-chat');
     const closeBtn = document.getElementById('close-chat');
     const chatInput = document.getElementById('chat-input');
     const chatOutput = document.getElementById('chat-output');
 
-    // Toggle logic
+    if(!chatWindow || !openBtn) return;
+
     openBtn.addEventListener('click', () => {
         chatWindow.classList.remove('chat-terminal-hidden');
         chatWindow.classList.add('chat-terminal-visible');
@@ -225,14 +236,12 @@ function initAiTerminal() {
         chatWindow.classList.add('chat-terminal-hidden');
     });
 
-    // Handle Input
     chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && chatInput.value.trim() !== '') {
             const userText = chatInput.value.trim();
             appendMessage('user-message', `guest@choc:~$ ${userText}`);
             chatInput.value = '';
             
-            // Simulate AI processing delay
             setTimeout(() => {
                 generateAiResponse(userText.toLowerCase());
             }, 600);
@@ -244,25 +253,24 @@ function initAiTerminal() {
         p.className = className;
         p.textContent = text;
         chatOutput.appendChild(p);
-        chatOutput.scrollTop = chatOutput.scrollHeight; // Auto-scroll to bottom
+        chatOutput.scrollTop = chatOutput.scrollHeight; 
     }
 
-    // Mock AI Logic Engine (Replace with Fetch API to OpenAI later if desired)
     function generateAiResponse(input) {
         let response = "> Command not recognized. Try asking about 'queuecare', 'revocab', 'skills', or 'contact'.";
 
         if (input.includes('queuecare')) {
-            response = "> QUEUECARE: A digital queue and service management system built in 2026. Tech stack includes Java, HTML, and JS. It features a queue number generator, live serving display, and category selection.";
+            response = "> QUEUECARE: A digital queue and service management system built in 2026. Tech stack includes Java, HTML, and JS.";
         } else if (input.includes('revocab')) {
-            response = "> REVOCAB: A flashcard-based language learning app utilizing Spaced Repetition logic. Built in 2025 using Python and ML logic to adjust review times based on user memory retention.";
+            response = "> REVOCAB: A flashcard-based language learning app utilizing Spaced Repetition logic. Built in 2025 using Python and ML logic.";
         } else if (input.includes('skills') || input.includes('stack')) {
             response = "> TECH_STACK: Spencer is proficient in React, Next.js, Tailwind, Node.js, Python, PHP, Java, and MySQL/PostgreSQL.";
         } else if (input.includes('contact') || input.includes('email') || input.includes('hire')) {
-            response = "> UPLINK: You can initiate a handshake via email at chocwebster@gmail.com, or find him on GitHub @kylevlln.";
+            response = "> UPLINK: Initiate handshake via email at chocwebster@gmail.com, or GitHub @kylevlln.";
         } else if (input.includes('who are you') || input.includes('spencer')) {
-            response = "> BIO: Spencer Villena is a first-year IT student at the University of Pangasinan. He specializes in full-stack development and creative engineering.";
+            response = "> BIO: Spencer Villena is a first-year IT student at the University of Pangasinan. Specializes in full-stack development and creative engineering.";
         } else if (input.includes('clear') || input.includes('cls')) {
-            chatOutput.innerHTML = ''; // Clear chat
+            chatOutput.innerHTML = ''; 
             return;
         }
 
@@ -272,10 +280,10 @@ function initAiTerminal() {
 
 // --- SYSTEM INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    populateRegistry();      // Inject HTML first so cursor logic can attach to it
-    initCursorAndHover();    // Attach cursor listeners
-    initClock();             // Start the clock
-    initSmoothScroll();      // Attach nav scrolling
-    initAiTerminal();        // Boot up the AI Chatbox
-    initBootSequence();      // Trigger the bootloader
+    populateRegistry();      
+    initCursorAndHover();    
+    initClock();             
+    initSmoothScroll();      
+    initAiTerminal();        
+    initBootSequence();      
 });
