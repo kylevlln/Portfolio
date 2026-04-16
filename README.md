@@ -1,8 +1,6 @@
 # CHOC_CORE // Personal Portfolio
 
-A cinematic, cyber-brutalist, and terminal-inspired portfolio website created by Spencer Villena. Built entirely with pure **HTML**, custom **CSS**, and **Vanilla JavaScript**, this site is designed to showcase projects, technical telemetry, and capabilities with a high-end, intentional aesthetic. 💻
-
-🌐 **[View Live Demo Here](https://your-vercel-link-goes-here.vercel.app)** *(Replace with your Vercel link once deployed)*
+A cinematic, cyberbrutalist, and terminal-inspired portfolio website created by Spencer. Built entirely with pure **HTML**, custom **CSS**, and **Vanilla JavaScript**, this site is designed to showcase projects, technical telemetry, and capabilities with a high-end, intentional aesthetic. 
 
 ## 🚀 Features
 
